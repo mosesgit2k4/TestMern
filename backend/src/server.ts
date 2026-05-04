@@ -8,5 +8,6 @@ import dotenv from './config/dotenv.js';
     await sequelize.sync({ alter: true });
     app.listen(dotenv.PORT, () => {
         console.log(`Server running on http://localhost:${dotenv.PORT}`);
+        console.log('git changes')
     });
 })();
