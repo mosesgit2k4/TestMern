@@ -8,5 +8,8 @@ export default {
     DB_PASSWORD: process.env.DB_PASSWORD!,
     DB_NAME: process.env.DB_NAME!,
     PORT: process.env.PORT!,
-    usertable: process.env.USERDETAILS!
+    usertable: process.env.USERDETAILS!,
+    orderitemtable: process.env.ORDERITEMS!,
+    ordertable:process.env.ORDER!,
+    producttable: process.env.PRODUCT!
 }
