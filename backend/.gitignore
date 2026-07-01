@@ -5,7 +5,8 @@ node_modules/
 dist/
 
 # Environment files
-backend/.env
+.env
+**/.env
 
 # Logs
 logs/
