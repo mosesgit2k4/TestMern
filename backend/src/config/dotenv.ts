@@ -1,5 +1,4 @@
 import dotenv from 'dotenv'
-import Product from '../model/productmodel.js'
 
 dotenv.config()
 
@@ -11,7 +10,7 @@ export default {
     PORT: process.env.PORT!,
     usertable: process.env.USERDETAILS!,
     orderitemtable: process.env.ORDERITEMS!,
-    ordertable:process.env.ORDER!,
+    ordertable: process.env.ORDER!,
     producttable: process.env.PRODUCT!,
-    wishlisttable:process.env.WISHLIST!
+    wishlisttable: process.env.WISHLIST!
 }

@@ -1,5 +1,4 @@
-import { DataTypes, Model, type Optional } from "sequelize";
-import { sequelize } from "../config/database.js";
+import { DataTypes, Model, type Optional, type Sequelize } from "sequelize";
 import dotenv from "../config/dotenv.js";
 import User from "./usermodel.js";
 import Product from "./productmodel.js";
@@ -19,31 +18,33 @@ class Wishlist extends Model<wishlistAttributes,wishlistwithoutId> implements wi
     declare product_id: number;
 }
 
-Wishlist.init({
-    wishlist_id: {
-        type:DataTypes.INTEGER,
-        autoIncrement:true,
-        primaryKey:true
-    },
-    user_id: {
-        type:DataTypes.INTEGER,
-        allowNull:false,
-        references: {
-            model:User,
-            key:"id"
+export function initWishlist(sequelize: Sequelize) {
+    Wishlist.init({
+        wishlist_id: {
+            type:DataTypes.INTEGER,
+            autoIncrement:true,
+            primaryKey:true
+        },
+        user_id: {
+            type:DataTypes.INTEGER,
+            allowNull:false,
+            references: {
+                model:User,
+                key:"id"
+            }
+        },
+        product_id: {
+            type:DataTypes.INTEGER,
+            allowNull:false,
+            references: {
+                model:Product,
+                key:"product_id"
+            }
         }
-    },
-    product_id: {
-        type:DataTypes.INTEGER,
-        allowNull:false,
-        references: {
-            model:Product,
-            key:"product_id"
-        }
-    }
-},{
-    sequelize,
-    tableName: dotenv.wishlisttable
-})
+    },{
+        sequelize,
+        tableName: dotenv.wishlisttable
+    })
+}
 
 export default Wishlist

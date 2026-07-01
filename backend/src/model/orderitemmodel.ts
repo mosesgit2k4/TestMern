@@ -1,5 +1,4 @@
-import { DataTypes, Model, type Optional } from "sequelize";
-import { sequelize } from "../config/database.js";
+import { DataTypes, Model, type Optional, type Sequelize } from "sequelize";
 import dotenv from "../config/dotenv.js";
 import Order from "./ordermodel.js";
 import Product from "./productmodel.js";
@@ -23,44 +22,46 @@ class OrderItem extends Model<OrderItemAttributes,OrderItemwithoutidAttributes> 
     declare readonly createdAt: Date;
     declare readonly updatedAt: Date;
 }
-OrderItem.init({
-    order_item_id:{
-        type:DataTypes.INTEGER,
-        autoIncrement:true,
-        primaryKey:true
-    },
-    order_id:{
-        type:DataTypes.INTEGER,
-        allowNull:false,
-        references: {
-            model:Order,
-            key:"order_id"
+
+export function initOrderItem(sequelize: Sequelize) {
+    OrderItem.init({
+        order_item_id:{
+            type:DataTypes.INTEGER,
+            autoIncrement:true,
+            primaryKey:true
         },
-        onUpdate:"CASCADE",
-        onDelete:"RESTRICT"
-    },
-    product_id:{
-        type: DataTypes.INTEGER,
-        allowNull:false,
-        references: {
-            model:Product,
-            key: "product_id"
+        order_id:{
+            type:DataTypes.INTEGER,
+            allowNull:false,
+            references: {
+                model:Order,
+                key:"order_id"
+            },
+            onUpdate:"CASCADE",
+            onDelete:"RESTRICT"
         },
-        onUpdate:"CASCADE",
-        onDelete:"RESTRICT"
-    },
-    quantity:{
-        type:DataTypes.INTEGER,
-        allowNull:false,
-        
-    },
-    price: {
-        type:DataTypes.INTEGER,
-        allowNull:false
-    }
-},{
-    sequelize,
-    tableName:dotenv.orderitemtable
-})
+        product_id:{
+            type: DataTypes.INTEGER,
+            allowNull:false,
+            references: {
+                model:Product,
+                key: "product_id"
+            },
+            onUpdate:"CASCADE",
+            onDelete:"RESTRICT"
+        },
+        quantity:{
+            type:DataTypes.INTEGER,
+            allowNull:false,
+        },
+        price: {
+            type:DataTypes.INTEGER,
+            allowNull:false
+        }
+    },{
+        sequelize,
+        tableName:dotenv.orderitemtable
+    })
+}
 
 export default OrderItem

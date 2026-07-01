@@ -1,5 +1,4 @@
-import { DataTypes, Model, type Optional } from "sequelize";
-import { sequelize } from "../config/database.js";
+import { DataTypes, Model, type Optional, type Sequelize } from "sequelize";
 import bcrypt from "bcrypt";
 import dotenv from "../config/dotenv.js";
 
@@ -36,62 +35,64 @@ class User
     }
 }
 
-User.init(
-    {
-        id: {
-            type: DataTypes.INTEGER,
-            autoIncrement: true,
-            primaryKey: true,
-        },
-
-        username: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-
-        email: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            unique: true,
-        },
-
-        phnnumber: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-
-        address: {
-            type: DataTypes.TEXT,
-            allowNull: false,
-        },
-
-        password: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-
-        role_id: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            defaultValue: 1,
-        },
-    },
-    {
-        sequelize,
-        tableName: dotenv.usertable,
-
-        hooks: {
-            beforeCreate: async (user: User) => {
-                user.password = await User.hashPassword(user.password);
+export function initUser(sequelize: Sequelize) {
+    User.init(
+        {
+            id: {
+                type: DataTypes.INTEGER,
+                autoIncrement: true,
+                primaryKey: true,
             },
 
-            beforeUpdate: async (user: User) => {
-                if (user.changed("password")) {
+            username: {
+                type: DataTypes.STRING,
+                allowNull: false,
+            },
+
+            email: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                unique: true,
+            },
+
+            phnnumber: {
+                type: DataTypes.STRING,
+                allowNull: false,
+            },
+
+            address: {
+                type: DataTypes.TEXT,
+                allowNull: false,
+            },
+
+            password: {
+                type: DataTypes.STRING,
+                allowNull: false,
+            },
+
+            role_id: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+                defaultValue: 1,
+            },
+        },
+        {
+            sequelize,
+            tableName: dotenv.usertable,
+
+            hooks: {
+                beforeCreate: async (user: User) => {
                     user.password = await User.hashPassword(user.password);
-                }
+                },
+
+                beforeUpdate: async (user: User) => {
+                    if (user.changed("password")) {
+                        user.password = await User.hashPassword(user.password);
+                    }
+                },
             },
-        },
-    }
-);
+        }
+    );
+}
 
 export default User;
